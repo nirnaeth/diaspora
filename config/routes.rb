@@ -162,6 +162,8 @@ Rails.application.routes.draw do
     post 'users/:id/remove_moderator' => 'users#remove_moderator', :as => 'remove_moderator'
     post 'users/:id/make_spotlight' => 'users#make_spotlight', :as => 'make_spotlight'
     post 'users/:id/remove_spotlight' => 'users#remove_spotlight', :as => 'remove_spotlight'
+
+    resource :user, only: :update
   end
 
   resource :profile, :only => [:edit, :update]

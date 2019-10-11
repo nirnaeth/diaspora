@@ -35,4 +35,59 @@ describe Admin::UsersController, :type => :controller do
     end
   end
 
+  describe '#update' do
+    let(:user_to_update) { FactoryGirl.create :user }
+
+    context 'success' do
+      it 'updates the user email' do
+        new_email = 'bob_new_email@pivotallabs.com'
+
+        put :update, params: {id: user_to_update.id, email: new_email}
+
+        expect(user_to_update.reload.email).to eq new_email
+      end
+
+      it 'redirects to the user search' do
+        new_email = 'bob_new_email@pivotallabs.com'
+
+        put :update, params: {id: user_to_update.id, email: new_email}
+
+        expect(response).to redirect_to user_search_path
+      end
+
+      it 'confirms email update' do
+        new_email = 'bob_new_email@pivotallabs.com'
+
+        put :update, params: {id: user_to_update.id, email: new_email}
+
+        expect(flash.notice).to include("email updated")
+      end
+    end
+
+    context 'failure' do
+      it 'does not nullify the email' do
+        empty_email = ''
+
+        put :update, params: {id: user_to_update.id, email: empty_email}
+
+        expect(user_to_update.reload.email).to_not eq empty_email
+      end
+
+      it 'redirects to the user search' do
+        new_email = ''
+
+        put :update, params: {id: user_to_update.id, email: new_email}
+
+        expect(response).to redirect_to user_search_path
+      end
+
+      it 'communicate the error' do
+        empty_email = ''
+
+        put :update, params: {id: user_to_update.id, email: empty_email}
+
+        expect(flash.notice).to include("cannot update user email")
+      end
+    end
+  end
 end

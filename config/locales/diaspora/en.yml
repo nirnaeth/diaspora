@@ -140,6 +140,9 @@ en:
         zero: "%{count} users found"
         one: "%{count} user found"
         other: "%{count} users found"
+      user_email_update:
+        success: user email updated successfully with %{email}
+        failed: cannot update user email with %{email}
     user_entry:
       id: "ID"
       guid: "GUID"

@@ -82,11 +82,25 @@ module Admin
       redirect_to user_search_path, notice: t(notice, name: @user.username)
     end
 
+    def update
+      u = User.find(params[:id])
+
+      if u.update(email: update_params[:email])
+        redirect_to user_search_path, notice: t('admins.user_search.user_email_update.success', email: u.email)
+      else
+        redirect_to user_search_path, notice: t('admins.user_search.user_email_update.failed', email: u.email)
+      end
+    end
+
     private
 
     def validate_user
       @user = User.where(id: params[:id]).first
       redirect_to user_search_path, notice: t("admins.user_search.does_not_exist") unless @user
+    end
+
+    def update_params
+      params.permit(:email)
     end
   end
 end
